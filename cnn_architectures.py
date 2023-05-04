@@ -35,7 +35,7 @@ class LeNet5(nn.Module):
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)
-        x = x.view(x.size(0), -1)
+        x = x.view(-1, x.size(0))
 
         #passing through linear layers
         x = torch.tanh(self.fc1(x))

@@ -48,6 +48,8 @@ class LeNet5(nn.Module):
 
 class AlexNet(nn.Module):
 
+    #need to resize data from 28x28 to 227x227 in order to use AlexNet
+
     def __init__(self, num_classes):
         super(AlexNet, self).__init__()
 
@@ -81,7 +83,7 @@ class AlexNet(nn.Module):
         x = self.conv3(x)
         x = self.conv4(x)
         x = self.conv5(x)
-        x = x.view(x.size(0), -1)
+        x = x.view(-1, x.size(0))
 
         #passing through linear layers
         x = F.relu(self.fc1(x))

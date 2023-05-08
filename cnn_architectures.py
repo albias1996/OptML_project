@@ -35,14 +35,14 @@ class LeNet5(nn.Module):
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)
-        x = x.view(-1, x.size(0))
+        x = x.view(-1, x.size(1))
 
         #passing through linear layers
         x = torch.tanh(self.fc1(x))
         logits = self.fc2(x)
         probs = F.softmax(logits, dim=1)
         
-        return probs
+        return logits
     
 
 

@@ -3,7 +3,12 @@
 # succesful
 
 import torch
+import numpy as np 
 from datetime import datetime 
+from sklearn.metrics import confusion_matrix
+import seaborn as sn 
+import pandas as pd 
+import matplotlib.pyplot as plt
 
 def reshape_train_data(raw_mnist_trainset,DEVICE):
 
@@ -138,3 +143,43 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
                   f'Valid accuracy: {100 * valid_acc:.2f}')
     
     return model, optimizer, (train_losses, valid_losses)
+
+
+def confusion_matrix(loader, model):
+    '''
+    this function computes the confusion matrix for each class. 
+    '''
+
+    y_true = []
+    y_pred = []
+
+    for input, target in loader:
+        output = model(input).max(dim = 1)[1]
+
+        output = output.numpy()
+        y_pred.extend(output) #save prediction 
+
+        target = target.numpy()
+        y_true.extend(target) #save ground truth 
+
+
+    #constant for classes 
+    classes = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+
+    cf_matrix = confusion_matrix(y_true, y_pred)
+    df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index=[i for i in classes],
+                         columns=[i for i in classes])
+    
+    #round nb decimal for better representation in heat map 
+    nb_decimal = 3
+    df_cm = round(df_cm, nb_decimal)
+    
+
+    #adjust size of the plot
+    plt.figure(figsize=(12, 7))
+
+    return sn.heatmap(df_cm, annot=True).get_figure()
+    
+
+
+    

@@ -145,7 +145,7 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
     return model, optimizer, (train_losses, valid_losses)
 
 
-def confusion_matrix(loader, model):
+def compute_confusion_matrix(loader, model):
     '''
     this function computes the confusion matrix for each class. 
     '''
@@ -178,7 +178,12 @@ def confusion_matrix(loader, model):
     #adjust size of the plot
     plt.figure(figsize=(12, 7))
 
-    return sn.heatmap(df_cm, annot=True).get_figure()
+    ax = sn.heatmap(df_cm, annot=True)
+    ax.set(xlabel="Predicted label", ylabel="True label")
+    ax.xaxis.tick_top()
+
+    return ax
+
     
 
 

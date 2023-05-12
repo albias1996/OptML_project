@@ -40,6 +40,19 @@ def reshape_test_data(raw_mnist_testset,DEVICE):
     
     return test_data, test_target
 
+def compute_gradient_norm(model):
+    '''
+    Compute the norm of the gradient at each step. 
+    The below code is a copy of the one in the following link : https://discuss.pytorch.org/t/check-the-norm-of-gradients/27961
+    '''
+    sum_norm = 0
+    for p in model.parameters():
+         param_norm = p.grad.detach().data.norm(2)
+         sum_norm += param_norm.item() ** 2
+
+    return sum_norm**0.5
+
+
 def train(train_loader, model, criterion, optimizer, device):
     '''
     Function for the training step of the training loop
@@ -47,6 +60,8 @@ def train(train_loader, model, criterion, optimizer, device):
 
     model.train()
     running_loss = 0
+    grad_norm = 0
+    
     
     for X, y_true in train_loader:
 
@@ -64,8 +79,11 @@ def train(train_loader, model, criterion, optimizer, device):
         loss.backward()
         optimizer.step()
         
+        #to check 
+        grad_norm = compute_gradient_norm(model)
+        
     epoch_loss = running_loss / len(train_loader.dataset)
-    return model, optimizer, epoch_loss
+    return model, optimizer, epoch_loss, grad_norm
 
 def validate(test_loader, model, criterion, device):
     '''
@@ -107,6 +125,8 @@ def get_accuracy(model, loader, device):
             count+= y.shape[0]
         
         return acc / count
+    
+
         
 def training_loop(model, criterion, optimizer, train_loader, valid_loader, epochs, device, print_every=1):
     '''
@@ -117,13 +137,17 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
     best_loss = 1e10
     train_losses = []
     valid_losses = []
+    gradient_norms = []
  
     # Train model
     for epoch in range(0, epochs):
 
         # training
-        model, optimizer, train_loss = train(train_loader, model, criterion, optimizer, device)
+        model, optimizer, train_loss, grad_norm = train(train_loader, model, criterion, optimizer, device)
         train_losses.append(train_loss)
+
+        #to check 
+        gradient_norms.append(grad_norm)
 
         # validation
         with torch.no_grad():

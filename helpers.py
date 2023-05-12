@@ -9,6 +9,7 @@ from sklearn.metrics import confusion_matrix
 import seaborn as sn 
 import pandas as pd 
 import matplotlib.pyplot as plt
+import torch_optimizer
 
 def reshape_train_data(raw_mnist_trainset,DEVICE):
 
@@ -47,13 +48,13 @@ def compute_gradient_norm(model):
     '''
     sum_norm = 0
     for p in model.parameters():
-         param_norm = p.grad.detach().data.norm(2)
-         sum_norm += param_norm.item() ** 2
+        param_norm = p.grad.detach().data.norm(2)
+        sum_norm += param_norm.item() ** 2
 
     return sum_norm**0.5
 
 
-def train(train_loader, model, criterion, optimizer, device):
+def train(train_loader, model, criterion, optimizer, device, second_order_method = False):
     '''
     Function for the training step of the training loop
     '''
@@ -76,7 +77,11 @@ def train(train_loader, model, criterion, optimizer, device):
         running_loss += loss.item() * X.size(0)
 
         # Backward pass
-        loss.backward()
+        if second_order_method:
+            loss.backward(create_graph = True)
+        else:
+            loss.backward()
+            
         optimizer.step()
         
         #to check 
@@ -126,9 +131,8 @@ def get_accuracy(model, loader, device):
         
         return acc / count
     
-
         
-def training_loop(model, criterion, optimizer, train_loader, valid_loader, epochs, device, print_every=1):
+def training_loop(model, criterion, optimizer, train_loader, valid_loader, epochs, device, print_every=1,second_order_method = False):
     '''
     Function defining the entire training loop
     '''
@@ -143,7 +147,7 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
     for epoch in range(0, epochs):
 
         # training
-        model, optimizer, train_loss, grad_norm = train(train_loader, model, criterion, optimizer, device)
+        model, optimizer, train_loss, grad_norm = train(train_loader, model, criterion, optimizer, device, second_order_method)
         train_losses.append(train_loss)
 
         #to check 
@@ -169,7 +173,7 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
     return model, optimizer, (train_losses, valid_losses)
 
 
-def compute_confusion_matrix(loader, model):
+def compute_confusion_matrix(loader, model, N_CLASSES):
     '''
     this function computes the confusion matrix for each class. 
     '''
@@ -177,8 +181,8 @@ def compute_confusion_matrix(loader, model):
     y_true = []
     y_pred = []
 
-    for input, target in loader:
-        output = model(input).max(dim = 1)[1]
+    for label, target in loader:
+        output = model(label).max(dim = 1)[1]
 
         output = output.numpy()
         y_pred.extend(output) #save prediction 
@@ -188,7 +192,7 @@ def compute_confusion_matrix(loader, model):
 
 
     #constant for classes 
-    classes = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+    classes = set(map(lambda x: str(x), range(N_CLASSES)))
 
     cf_matrix = confusion_matrix(y_true, y_pred)
     df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index=[i for i in classes],

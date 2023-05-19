@@ -61,7 +61,7 @@ def train(train_loader, model, criterion, optimizer, device, second_order_method
 
     model.train()
     running_loss = 0
-    grad_norm = 0
+    grad_norm = []
     
     
     for X, y_true in train_loader:
@@ -85,7 +85,7 @@ def train(train_loader, model, criterion, optimizer, device, second_order_method
         optimizer.step()
         
         #to check 
-        grad_norm = compute_gradient_norm(model)
+        grad_norm.append(compute_gradient_norm(model))
         
     epoch_loss = running_loss / len(train_loader.dataset)
     return model, optimizer, epoch_loss, grad_norm
@@ -151,7 +151,7 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
         train_losses.append(train_loss)
 
         #to check 
-        gradient_norms.append(grad_norm)
+        gradient_norms.extend(grad_norm)
 
         # validation
         with torch.no_grad():
@@ -170,12 +170,12 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
                   f'Train accuracy: {100 * train_acc:.2f}\t'
                   f'Valid accuracy: {100 * valid_acc:.2f}')
     
-    return model, optimizer, (train_losses, valid_losses)
+    return model, optimizer, (train_losses, valid_losses), gradient_norms
 
 
 def compute_confusion_matrix(loader, model, N_CLASSES):
     '''
-    this function computes the confusion matrix for each class. 
+    this function computes the confusion matrix for each class using the test loader
     '''
 
     y_true = []
@@ -211,6 +211,19 @@ def compute_confusion_matrix(loader, model, N_CLASSES):
     ax.xaxis.tick_top()
 
     return ax
+
+def plot_gradient_norm(gradient_norm, method):
+    
+    """ Function to visualize the gradient norm during the training procedure"""
+    
+    # We only consider the last 30 gradient norm, since they are computed when approaching the solution of the 
+    # optimization process
+   
+    
+    plt.plot(range(len(gradient_norm)), gradient_norm, label = 'Euclidean Gradient Norm using {}'.format(method))
+    plt.legend()
+    plt.xlabel('# Steps')
+    plt.ylabel('Gradient Norm')
 
     
 

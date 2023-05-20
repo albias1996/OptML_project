@@ -224,6 +224,17 @@ def plot_gradient_norm(gradient_norm, method):
     plt.legend()
     plt.xlabel('# Steps')
     plt.ylabel('Gradient Norm')
+    
+# This is a simple function, that will allow us to perturb the model paramters and get the result
+def get_params(model_orig,  model_perb, direction, alpha):
+    """ 
+    Function to perturb the parameters aroung the result of the optimization problem.
+    This function is useful to later plot the loss landscape in the neighborhood of our solution
+    """
+    
+    for m_orig, m_perb, d in zip(model_orig.parameters(), model_perb.parameters(), direction):
+        m_perb.data = m_orig.data + alpha * d
+    return model_perb
 
     
 

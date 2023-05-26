@@ -270,7 +270,7 @@ def plot_gradient_norm(gradient_norm, method):
     # optimization process
    
     plt.plot(range(len(gradient_norm)), gradient_norm, label = 'Euclidean Gradient Norm using {}'.format(method))
-    plt.legend()
+    plt.legend(loc='upper right')
     plt.xlabel('# Steps')
     plt.ylabel('Gradient Norm')
     

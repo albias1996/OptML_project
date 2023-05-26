@@ -1,4 +1,6 @@
-# Optimization for Machine Learning
+# Optimization for Machine Learning project 
+
+Describe in some lines the goal of the project...
 
 ## Team:
 Our team is composed by:  

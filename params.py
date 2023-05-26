@@ -1,16 +1,21 @@
 
-## Parameters for ADAM optimizer
+# Python file containing the hyperparameters to use for different optimizers, in order to have good results
+# in terms of accuracy
+
+
+## Parameters for ADAM optimizer (good performance)
 
 ADAM_LEARNING_RATE = 0.001
 ADAM_BATCH_SIZE = 32
 ADAM_N_EPOCHS = 15
 
 
-## Parameters for SGD optimizer 
+## Parameters for SGD optimizer (good performance)
 
 SGD_LEARNING_RATE = 0.01
 SGD_BATCH_SIZE = 128
-SGD_N_EPOCHS = 10 
+SGD_N_EPOCHS = 20
+
 
 ## Parameters for AdaGrad optimizer 
 

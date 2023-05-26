@@ -1,6 +1,31 @@
-# OptML_project
+# Optimization for Machine Learning
 
-This project was done in the scope of CS-439 : Optimization for ML. Moreover, this project was done by the following ones : 
-- Brioschi Riccardo
-- Mossinelli Giacomo 
-- Havolli Albias 
+## Team:
+Our team is composed by:  
+- Brioschi Riccardo: [@RiccardoBrioschi](https://github.com/RiccardoBrioschi)  
+- Mossinelli Giacomo: [@mossinel](https://github.com/mossinel)  
+- Havolli Albias: [@albias.1996](https://github.com/albias1996)
+
+## Environment:
+
+
+## Data and reproducibility of the code
+
+## Description of files
+Here you can find a detailed description of what each file in this repository contains.
+- `params.py`- file containing the parameters we had to set before training the final model.
+- `helpers.py`- implementation of all the "support" functions used in others .py files.
+- `cnn_architectures.py` -   notebook containing
+- `main_adagrad_MNIST.ipynb` -  notebook containing
+- `main_adam_MNIST.ipynb` -  notebook containing
+- `main_second_order_method_MNIST.ipynb` -  notebook containing
+- `main_sgd_MNIST.ipynb` -   notebook containing
+- `report.pdf` - final report of our project
+
+## Description of folders
+Here you can find a detailed description of what each folder in this repository contains.
+
+
+
+
+

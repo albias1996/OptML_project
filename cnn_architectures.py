@@ -35,7 +35,7 @@ class LeNet5(nn.Module):
 
     def forward(self, x):
         
-        # Passing trhough convulation layers and flatten output tensor
+        # Passing trhough convolution layers and flatten output tensor
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)

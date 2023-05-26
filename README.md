@@ -15,11 +15,8 @@ Our team is composed by:
 Here you can find a detailed description of what each file in this repository contains.
 - `params.py`- file containing the parameters we had to set before training the final model.
 - `helpers.py`- implementation of all the "support" functions used in others .py files.
-- `cnn_architectures.py` -   notebook containing
-- `main_adagrad_MNIST.ipynb` -  notebook containing
-- `main_adam_MNIST.ipynb` -  notebook containing
-- `main_second_order_method_MNIST.ipynb` -  notebook containing
-- `main_sgd_MNIST.ipynb` -   notebook containing
+- `cnn_architectures.py` -   notebook containing the architecture of LeNet
+- `main_OPTIMIZER_NAME_MNIST.ipynb` -  notebook containing the different training steps and different experiments. Note that we create a notebook per optimizers for better comprehension
 - `report.pdf` - final report of our project
 
 ## Description of folders

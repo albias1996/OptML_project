@@ -1,7 +1,7 @@
 # Optimization for Machine Learning
 
 ## Team:
-Our team (named `FGRxML`) is composed by:  
+Our team is composed by:  
 - Brioschi Riccardo: [@RiccardoBrioschi](https://github.com/RiccardoBrioschi)  
 - Mossinelli Giacomo: [@mossinel](https://github.com/mossinel)  
 - Havolli Albias: [)  

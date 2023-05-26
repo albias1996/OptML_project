@@ -17,7 +17,7 @@ SGD_BATCH_SIZE = 128
 SGD_N_EPOCHS = 20
 
 
-## Parameters for AdaGrad optimizer 
+## Parameters for AdaGrad optimizer (good performance)
 
 ADAGRAD_LEARNING_RATE = 0.01
 ADAGRAD_DECAY = 0

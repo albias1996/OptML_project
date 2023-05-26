@@ -72,7 +72,7 @@ def compute_gradient_norm(model):
     return sum_norm**0.5
 
 
-def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_hessian, second_order_method = False):
+def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_hessian, iter_per_epoch, second_order_method = False):
     '''
     Function for the training step of the training loop. This function also computes the 
     norm of the gradient and the spectral gap.
@@ -86,9 +86,9 @@ def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_h
     
     
     # Looping over the train batch
-    for X, y_true in train_loader:
+    for i,(X, y_true) in enumerate(train_loader):
         
-        if epoch == 0:  # it means it is the last action
+        if epoch == 0 and (iter_per_epoch - i) <= 30:  # it means it is the last action
 
             # Initializing the pyhessian object to compute the spectral gap
             hessian_comp = hessian(model , criterion, data=(batch_data_hessian[0], batch_data_hessian[1]), cuda=False)
@@ -97,7 +97,7 @@ def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_h
             top_eigenvalues, _ = hessian_comp.eigenvalues(top_n=2)
 
             # Appending the spectral gap obtained in this iteration
-            spectral_gaps.append(top_eigenvalues[1] / top_eigenvalues[0])
+            spectral_gaps.append(top_eigenvalues[0] / top_eigenvalues[1])
 
         # Setting the previously computed gradients to zero
         optimizer.zero_grad()
@@ -172,7 +172,7 @@ def get_accuracy(model, loader, device):
         return acc / count
     
         
-def training_loop(model, criterion, optimizer, train_loader, valid_loader, epochs, device, batch_data_hessian, second_order_method = False, print_every=1):
+def training_loop(model, criterion, optimizer, train_loader, valid_loader, epochs, device, batch_data_hessian, iter_per_epoch, second_order_method = False, print_every=1):
     """
     Function defining the entire training loop.
     """
@@ -188,7 +188,7 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
 
         # Training loop
         model, optimizer, train_loss, grad_norm, spectral_gaps = train(train_loader, model, criterion, optimizer, device,
-                                             (epochs - 1) - epoch, batch_data_hessian, second_order_method)
+                                             (epochs - 1) - epoch, batch_data_hessian, iter_per_epoch, second_order_method)
 
         train_losses.append(train_loss)
 

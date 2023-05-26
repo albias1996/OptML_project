@@ -1,6 +1,30 @@
 # OptML_project
 
-This project was done in the scope of CS-439 : Optimization for ML. Moreover, this project was done by the following ones : 
-- Brioschi Riccardo
-- Mossinelli Giacomo 
-- Havolli Albias 
+EPFL CS-439 : Optimization for ML Course, Spring 2023 - Project
+
+Members: Brioschi Riccardo, Mossinelli Giacomo, Havolli Albias
+
+
+
+# Overview
+
+- `params.py` - 
+
+- `helpers.py` - 
+
+- `cnn_architectures.py` -
+
+### Code
+
+- `main_adagrad_MNIST.ipynb` - notebook containing 
+
+- `main_adam_MNIST.ipynb` - notebook containing 
+
+- `main_second_order_method_MNIST.ipynb` - notebook containing 
+
+- `main_sgd_MNIST.ipynb` - notebook containing
+
+# Dataset
+
+# Environment
+

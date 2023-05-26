@@ -4,7 +4,7 @@
 Our team is composed by:  
 - Brioschi Riccardo: [@RiccardoBrioschi](https://github.com/RiccardoBrioschi)  
 - Mossinelli Giacomo: [@mossinel](https://github.com/mossinel)  
-- Havolli Albias: [)  
+- Havolli Albias: [@albias.1996](https://github.com/albias1996)
 
 ## Environment:
 

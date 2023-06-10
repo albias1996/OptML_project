@@ -21,6 +21,7 @@ Here you can find a detailed description of what each file in this repository co
 - `helpers.py`- implementation of all the "support" functions used in others .py files.
 - `cnn_architectures.py` -  python file containing the architecture of LeNet5
 - `main_OPTIMIZER_NAME_MNIST.ipynb` -  notebook containing the training procedure and the results obtained for each optimizer. We decide to have a separate notebook for each optimizer, in order to make the whole work more readable. In addition to the training procedure, we report all the obtained plots (gradient norm, spectral gap and loss landscapes) inside each notebook.
+- `plotting_results.ipynb` - notebook to plot all our results obtained from the aforementioned notebook. From this notebook, we can change all parameters plot (size, label and so)
 - `report.pdf` - final report of our project
 
 

@@ -162,8 +162,8 @@ def get_accuracy(model, loader, device):
         acc = 0
         count = 0
         for x, y in loader:
-            x.to(device)
-            y.to(device)
+            x = x.to(device)
+            y = y.to(device)
             y_hat = model(x).max(dim = 1)[1]
             acc+= torch.sum(y_hat == y)
             count+= y.shape[0]
@@ -277,7 +277,7 @@ def plot_gradient_norm(gradient_norm, method):
 
 def get_params(model_orig,  model_perb, direction, alpha):
     """ 
-    Function to perturb the parameters aroung the result of the optimization problem.
+    Function to perturb the parameters around the result of the optimization problem.
     This function is useful to later plot the loss landscape in the neighborhood of our solution
     """
     
@@ -285,8 +285,31 @@ def get_params(model_orig,  model_perb, direction, alpha):
     for m_orig, m_perb, d in zip(model_orig.parameters(), model_perb.parameters(), direction):
         
         # Defining new parameters perturbing the original ones along the direction given by d
-        m_perb.data = m_orig.data + alpha * d
+        m_perb.data = m_orig.data + alpha*d
     return model_perb
+
+def get_params_two_dir(model_orig, model_perb, direction_1, direction_2, alpha, beta):
+    """ 
+    Function to perturb the parameters in two different directions around the result
+    of the optimization problem. It will be useful to plot the 3D loss landscape.
+    """
+    for m_orig, m_perb, d1, d2 in zip(model_orig.parameters(), model_perb.parameters(), direction_1, direction_2):
+        
+        #defining new parameters perturbin the orginal ones along two directions d1 and d2
+        m_perb.data = m_orig.data + alpha*d1 + beta*d2
+    return model_perb
+
+def plot_3d_loss_landscape(X, Y, loss, method):
+    """
+    Function to visualize the loss landscape function in 3D
+    """
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
+    ax.plot_surface(X.numpy(), Y.numpy(), loss.numpy())
+    ax.set_title("Loss landscape perturbed with {} optimizer based on top two Hessian eigenvectors".format(method))
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Loss')
 
 
 def plot_spectral_gap(spectral_gaps, method):

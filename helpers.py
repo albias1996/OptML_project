@@ -88,10 +88,15 @@ def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_h
     # Looping over the train batch
     for i,(X, y_true) in enumerate(train_loader):
         
-        if epoch == 0 and (iter_per_epoch - i) <= 30:  # it means it is the last action
+        if epoch == 0 and (iter_per_epoch - i) <= 100:  # it means it is the last action
+
+            if torch.cuda.is_available():
+                CUDA = True
+            else:
+                CUDA = False
 
             # Initializing the pyhessian object to compute the spectral gap
-            hessian_comp = hessian(model , criterion, data=(batch_data_hessian[0], batch_data_hessian[1]), cuda=False)
+            hessian_comp = hessian(model , criterion, data=(batch_data_hessian[0], batch_data_hessian[1]), cuda=CUDA)
     
             # Computing the top eigenvalue
             top_eigenvalues, _ = hessian_comp.eigenvalues(top_n=2)
@@ -118,9 +123,9 @@ def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_h
             loss.backward()
             
         optimizer.step()
-        
-        # Computing the gradient norm
-        grad_norm.append(compute_gradient_norm(model))
+
+    # Computing the gradient norm
+    grad_norm.append(compute_gradient_norm(model))    
         
     epoch_loss = running_loss / len(train_loader.dataset)
     return model, optimizer, epoch_loss, grad_norm, spectral_gaps
@@ -172,7 +177,7 @@ def get_accuracy(model, loader, device):
         return acc / count
     
         
-def training_loop(model, criterion, optimizer, train_loader, valid_loader, epochs, device, batch_data_hessian, iter_per_epoch, second_order_method = False, print_every=1):
+def training_loop(model, criterion, optimizer, train_loader, valid_loader, epochs, device, batch_data_hessian, iter_per_epoch, second_order_method = False, print_every=10):
     """
     Function defining the entire training loop.
     """
@@ -192,7 +197,7 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
 
         train_losses.append(train_loss)
 
-        gradient_norms.extend(grad_norm)
+        gradient_norms.append(grad_norm)
 
         # Validation phase
         with torch.no_grad():
@@ -215,7 +220,7 @@ def training_loop(model, criterion, optimizer, train_loader, valid_loader, epoch
     return model, optimizer, (train_losses, valid_losses), gradient_norms, spectral_gaps
 
 
-def compute_confusion_matrix(loader, model, N_CLASSES):
+def compute_confusion_matrix(loader, model, N_CLASSES, device):
     """
     This function computes the confusion matrix for each class using the test loader (validation data).
     This is useful to discuss and observe the accuracy of the optimizer when focusing on every single class of
@@ -228,9 +233,9 @@ def compute_confusion_matrix(loader, model, N_CLASSES):
 
     # Looping over the validation set
     for label, target in loader:
-        output = model(label).max(dim = 1)[1]
+        output = model(label.to(device)).max(dim = 1)[1]
 
-        output = output.numpy()
+        output = output.cpu().numpy()
         y_pred.extend(output) #save prediction 
 
         target = target.numpy()

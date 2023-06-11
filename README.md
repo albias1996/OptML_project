@@ -6,7 +6,7 @@ In this repository you can find the code we used for the project done for the co
 Our team is composed by:  
 - Brioschi Riccardo: [@RiccardoBrioschi](https://github.com/RiccardoBrioschi)  
 - Mossinelli Giacomo: [@mossinel](https://github.com/mossinel)  
-- Havolli Albias: [@albias.1996](https://github.com/albias1996)
+- Havolli Albias: [@albias1996](https://github.com/albias1996)
 
 ## Environment:
 We worked with python 3.10. The Python libraries we used are numpy, pytorch1.13.0, pandas, matplotlib and pyhessian. The content of each notebook can be run using GPU if available.
@@ -20,7 +20,7 @@ Here you can find a detailed description of what each file in this repository co
 - `params.py`- file containing the parameters we had to set before training the final model.
 - `helpers.py`- implementation of all the "support" functions used in others .py files.
 - `cnn_architectures.py` -  python file containing the architecture of LeNet5
-- `main_OPTIMIZER_NAME_MNIST.ipynb` -  notebook containing the training procedure and the results obtained for each optimizer. We decide to have a separate notebook for each optimizer, in order to make the whole work more readable. In addition to the training procedure, we report all the obtained plots (gradient norm, spectral gap and loss landscapes) inside each notebook.
+- `main_OPTIMIZER_NAME.ipynb` -  notebook containing the training procedure and the results obtained for each optimizer. We decide to have a separate notebook for each optimizer, in order to make the whole work more readable. In addition to the training procedure, we report all the obtained plots (gradient norm, spectral gap and loss landscapes) inside each notebook.
 - `plotting_results.ipynb` - notebook to plot all our results obtained from the aforementioned notebook. From this notebook, we can change all parameters plot (size, label and so)
 - `report.pdf` - final report of our project
 

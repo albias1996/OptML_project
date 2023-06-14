@@ -54,11 +54,11 @@ def reshape_test_data(raw_mnist_testset,DEVICE):
     return test_data, test_target
 
 def compute_gradient_norm(model):
-    '''
+    """
     Function to compute the norm of the gradient at each step.
     The code below makes use of the euclidean norm.
     For a better explanation, please refer to the following link : https://discuss.pytorch.org/t/check-the-norm-of-     gradients/27961
-    '''
+    """
     
     # We initialize a variable to store the euclidean norm
     sum_norm = 0

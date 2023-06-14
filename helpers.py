@@ -73,10 +73,10 @@ def compute_gradient_norm(model):
 
 
 def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_hessian, iter_per_epoch, second_order_method = False):
-    '''
+    """
     Function for the training step of the training loop. This function also computes the 
     norm of the gradient and the spectral gap.
-    '''
+    """
 
     # Setting the model to train mode and initializing helper variables
     model.train()
@@ -101,7 +101,7 @@ def train(train_loader, model, criterion, optimizer, device, epoch, batch_data_h
             # Computing the top eigenvalue
             top_eigenvalues, _ = hessian_comp.eigenvalues(top_n=2)
 
-            # Appending the spectral gap obtained in this iteration
+            # Appending the ratio between the two largest eigenvalues obtained in this iteration
             spectral_gaps.append(top_eigenvalues[0] / top_eigenvalues[1])
 
         # Setting the previously computed gradients to zero
@@ -266,7 +266,7 @@ def compute_confusion_matrix(loader, model, N_CLASSES, device):
 def plot_gradient_norm(gradient_norm, method):
     """ 
     Function to visualize the gradient norm computed during the training procedure.
-    The function only takes into consideration the last 30 gradient norms, since 
+    The function is then used to plot the last 30 gradient norms, since 
     we can assume the loss to be locally convex and close to a minimum during the last iterations 
     of the methods and therefore we expect the gradient norm to be close to zero.
     """
@@ -319,7 +319,7 @@ def plot_3d_loss_landscape(X, Y, loss, method):
 
 def plot_spectral_gap(spectral_gaps, method):
     """ 
-    Function to visualize the spectral gap computing over the training
+    Function to visualize the ratio between the two largest hessian eigenvalues computed over the training
     trajectory during the last iterations of the training procedure.
     """
     
